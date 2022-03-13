@@ -1,8 +1,9 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Movie } from 'types/movie';
 import { BASE_URL } from 'utils/request';
+import { validateEmail } from 'utils/validate';
 import './styles.css';
 
 type Props = {
@@ -21,6 +22,8 @@ function FormCard( { movieId } : Props ) {
     };
     */
 
+    const navigate = useNavigate(); //jogar na tela principal
+    
     const [movie, setMovie] = useState<Movie>();
 
     useEffect(() => {
@@ -30,12 +33,39 @@ function FormCard( { movieId } : Props ) {
         })
     }, [movieId]); //só vai fazer a requisão quanto o valor mudar
 
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        
+        event.preventDefault(); //impede que o formulário seja enviado
+
+        const email = (event.target as any).email.value; //valor email input
+        const score = (event.target as any).score.value;
+
+        if(!validateEmail(email)) { //validar o email
+            return;
+        }
+
+        const config: AxiosRequestConfig = {
+            baseURL: BASE_URL,
+            method: 'PUT',
+            url: '/scores',
+            data: {
+                email: email,
+                movieId: movieId,
+                score: score
+            }
+        }
+
+        axios(config).then(response => {
+            navigate("/");
+        })
+    }
+    
     return ( //? -> se existir pega, se não existir pega nada
         <div className="dsmovie-form-container"> 
             <img className="dsmovie-movie-card-image" src={movie?.image} alt={movie?.title} /> 
             <div className="dsmovie-card-bottom-container">
                 <h3>{movie?.title}</h3>
-                <form className="dsmovie-form">
+                <form className="dsmovie-form" onSubmit={handleSubmit}>
                     <div className="form-group dsmovie-form-group">
                         <label htmlFor="email">Informe seu email</label>
                         <input type="email" className="form-control" id="email" />
