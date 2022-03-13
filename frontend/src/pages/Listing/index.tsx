@@ -22,7 +22,7 @@ function Listing() {
     }); //guarda as páginas da requisição
 
     useEffect(() => { //Executar algo na instanciação ou destruição do componente, observar estado
-        axios.get(`${BASE_URL}/movies?size=12&page=${pageNumber}&sort=id`) //sort -> ordenar
+        axios.get(`${BASE_URL}/movies?size=12&page=${pageNumber}&sort=score`) //sort -> ordenar
             .then(response => {
                 const data = response.data as MoviePage;
                 setPage(data);
