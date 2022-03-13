@@ -7,10 +7,10 @@ type Props = {
 }
 
 function MovieScore({ score, count } : Props) { //irá receber o props do movieStar
-
+//se não tiver avaliação, retornará -
     return (
         <div className="dsmovie-score-container">
-            <p className="dsmovie-score-value">{score > 0 ? score.toFixed(1) : '-'}</p>
+            <p className="dsmovie-score-value">{score > 0 ? score.toFixed(1) : '-'}</p> 
             <MovieStars score={score} />
             <p className="dsmovie-score-count">{count} avaliações</p>
         </div>
