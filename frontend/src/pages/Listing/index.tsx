@@ -9,7 +9,7 @@ function Listing() {
 
     const [pageNumber, setPageNumber] = useState(0); //Manter estado no componente
 
-    const [page, setPage] = useState<MoviePage>({
+    const [page, setPage] = useState<MoviePage>({ //armazenando as páginas do backend
         content: [],
         last: true,
         totalPages: 0,
@@ -29,12 +29,16 @@ function Listing() {
             });
     }, [pageNumber]); //quando mudar o pageNumber, vai refazer a requisição
 
+    const handlePageChange = (newPageNumber : number) => {
+        setPageNumber(newPageNumber);
+    }
+
     return (
         //aceitar as duas funções
         //mb -> margin bottom
         //bootstrap -> col-sm-6 vai ocupar 6 colunas das 12 da grid, ou seja cada card irá ocupar metade da telao conteiner
         <>
-            <Pagination />
+            <Pagination page={page} onChange={handlePageChange}/>
 
             <div className="containter">
                 <div className="row">
